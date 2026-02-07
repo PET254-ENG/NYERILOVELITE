@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up - NYERILOVELITE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="signup">
+    <nav>
+        <div class="logo"><a href="index.html">NYERI<span style="color:var(--gold)">LOVELITE</span></a></div>
+    </nav>
+    <div class="auth-box">
+        <h2>Create Account</h2>
+        <form id="signup-form">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email Address" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="number" id="age" placeholder="Age" min="18" required>
+            <select id="gender">
+                <option value="male">I am a Man</option>
+                <option value="female">I am a Woman</option>
+            </select>
+            <select id="interestedIn">
+                <option value="female">Seeking Women</option>
+                <option value="male">Seeking Men</option>
+                <option value="both">Seeking Both</option>
+            </select>
+            <button type="submit" class="btn-gold" style="width:100%; margin-top:20px;">Join Club</button>
+        </form>
+        <p style="margin-top:20px;"><a href="login.html" style="color:var(--gold)">Already a member? Login</a></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - NYERILOVELITE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="dashboard">
+    <nav>
+        <div class="logo">NYERI<span style="color:var(--gold)">LOVELITE</span></div>
+        <div class="nav-links">
+            <a href="#" style="color:var(--gold)">Discover</a>
+            <a href="matches.html">Matches</a>
+            <a href="#" class="logout-btn">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 style="text-align: center;">Hello, <span id="user-name-display"></span></h2>
+        
+        <div class="card-stack" id="card-container">
+            <div class="profile-card">
+                <img src="" id="card-img" class="profile-img" alt="Profile">
+                <div class="profile-info">
+                    <h3 id="card-name">Name, Age</h3>
+                    <p id="card-loc" style="color:var(--text-muted); font-size:0.9rem; margin-bottom:10px;">Location</p>
+                    <p id="card-bio">Bio goes here...</p>
+                </div>
+                <div class="actions">
+                    <button id="btn-pass" class="action-btn pass">✕</button>
+                    <button id="btn-like" class="action-btn like">♥</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
