@@ -6,11 +6,11 @@ const DB_SESSION = 'nyeri_session';
 const DB_MATCHES = 'nyeri_matches';
 const DB_MESSAGES = 'nyeri_messages';
 
-// Initialize Mock Data if empty
+// Initialize Mock Data
 function initApp() {
     if (!localStorage.getItem(DB_USERS)) {
         const dummyUsers = [
-            { id: 101, name: 'Zara', age: 24, location: 'Nairobi', bio: 'Fashion Designer. Love art and coffee.', gender: 'female', interestedIn: 'male', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400', likes: [1, 2, 3] }, // Likes IDs 1,2,3 automatically
+            { id: 101, name: 'Zara', age: 24, location: 'Nairobi', bio: 'Fashion Designer. Love art and coffee.', gender: 'female', interestedIn: 'male', img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400', likes: [1, 2, 3] },
             { id: 102, name: 'James', age: 29, location: 'Mombasa', bio: 'Entrepreneur. Sailing & Tech.', gender: 'male', interestedIn: 'female', img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400', likes: [1, 2, 3] },
             { id: 103, name: 'Amara', age: 26, location: 'Kisumu', bio: 'Doctor. Travel enthusiast.', gender: 'female', interestedIn: 'male', img: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400', likes: [1, 2, 3] },
             { id: 104, name: 'David', age: 31, location: 'Nakuru', bio: 'Architect. Building dreams.', gender: 'male', interestedIn: 'female', img: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400', likes: [1, 2, 3] }
@@ -55,15 +55,15 @@ function handleSignup() {
         const users = getUsers();
         
         const newUser = {
-            id: Date.now(), // Simple unique ID
+            id: Date.now(),
             name: document.getElementById('name').value,
             email: document.getElementById('email').value,
-            password: document.getElementById('password').value, // In real app, hash this!
+            password: document.getElementById('password').value,
             gender: document.getElementById('gender').value,
             interestedIn: document.getElementById('interestedIn').value,
             age: document.getElementById('age').value,
             bio: "New member looking for love.",
-            img: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400', // Placeholder
+            img: 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=400',
             likes: [] 
         };
 
@@ -100,13 +100,11 @@ function handleDashboard() {
 
     document.getElementById('user-name-display').textContent = user.name;
 
-    // Filter users: Not me, Match my preference, Not already liked/passed
-    // Note: In a real app, "passed" logic would be stored. Here we just show everyone else.
     let allUsers = getUsers();
     let potentialMatches = allUsers.filter(u => 
         u.id !== user.id && 
         (user.interestedIn === 'both' || u.gender === user.interestedIn) &&
-        !user.likes.includes(u.id) // Don't show already liked
+        !user.likes.includes(u.id)
     );
 
     const cardContainer = document.getElementById('card-container');
@@ -116,11 +114,9 @@ function handleDashboard() {
         return;
     }
 
-    // Render first profile
     const target = potentialMatches[0];
     renderCard(target);
 
-    // Like/Pass Logic
     document.getElementById('btn-like').onclick = () => processSwipe(user, target, true);
     document.getElementById('btn-pass').onclick = () => processSwipe(user, target, false);
 }
@@ -134,15 +130,10 @@ function renderCard(profile) {
 
 function processSwipe(currentUser, targetUser, isLike) {
     let allUsers = getUsers();
-    // Update current user in DB (refetch to ensure sync)
     let userIndex = allUsers.findIndex(u => u.id === currentUser.id);
     
     if (isLike) {
         allUsers[userIndex].likes.push(targetUser.id);
-        
-        // Check for Match
-        // Since dummy users "like" everyone (IDs 1,2,3...), and our generated ID is big,
-        // we simulate that dummy users ALWAYS like the new user back for demo purposes.
         const isMatch = targetUser.likes.includes(currentUser.id) || targetUser.id < 1000; 
         
         if (isMatch) {
@@ -157,8 +148,8 @@ function processSwipe(currentUser, targetUser, isLike) {
     }
 
     localStorage.setItem(DB_USERS, JSON.stringify(allUsers));
-    localStorage.setItem(DB_SESSION, JSON.stringify(allUsers[userIndex])); // Update session
-    location.reload(); // Reload to show next card
+    localStorage.setItem(DB_SESSION, JSON.stringify(allUsers[userIndex]));
+    location.reload();
 }
 
 // --- MATCHES PAGE ---
@@ -169,7 +160,6 @@ function handleMatches() {
     const allMatches = JSON.parse(localStorage.getItem(DB_MATCHES)) || [];
     const allUsers = getUsers();
     
-    // Filter matches involving current user
     const myMatches = allMatches.filter(m => m.users.includes(user.id));
     const container = document.getElementById('matches-grid');
 
@@ -214,7 +204,6 @@ function handleChat() {
     const messagesKey = `chat_${Math.min(user.id, partner.id)}_${Math.max(user.id, partner.id)}`;
     const chatBody = document.getElementById('chat-body');
 
-    // Load Messages
     function renderMessages() {
         const messages = JSON.parse(localStorage.getItem(messagesKey)) || [];
         chatBody.innerHTML = '';
@@ -229,7 +218,6 @@ function handleChat() {
 
     renderMessages();
 
-    // Send Message
     document.getElementById('send-btn').onclick = () => {
         const input = document.getElementById('msg-input');
         if(!input.value.trim()) return;
@@ -244,7 +232,6 @@ function handleChat() {
         input.value = '';
         renderMessages();
 
-        // Simulate Reply
         setTimeout(() => {
             messages.push({
                 senderId: partner.id,
